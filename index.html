@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 🩷</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg, #E6D9FF, #C8A2FF);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #C11C84;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* ⭐ Keep buttons/text ABOVE floating items */
+.container {
+    max-width: 90%;
+    position: relative;
+    z-index: 10;
+}
+
+h1 {
+    text-shadow:
+        0 0 5px #ff8fd6,
+        0 0 10px #ff8fd6,
+        0 0 20px #ff4db8,
+        0 0 40px #ff4db8;
+}
+
+button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    color: #7B5BD6;
+    cursor: pointer;
+    margin-top: 20px;
+    position: relative;
+    z-index: 20; /* extra safe */
+}
+
+#letter {
+    display: none;
+    font-size: 22px;
+    line-height: 1.6;
+}
+
+#closeBtn {
+    display: none;
+}
+
+/* ⭐ FLOATING ITEMS ALWAYS BEHIND */
+.heart, .kiss {
+    position: absolute;
+    animation: floatPulse 4s linear infinite;
+    z-index: 1;
+    pointer-events: none; /* ⭐ prevents blocking clicks */
+}
+
+/* SPARKLES */
+.sparkle {
+    position: absolute;
+    font-size: 12px;
+    color: white;
+    animation: twinkle 0.8s ease-out forwards;
+    z-index: 2;
+    pointer-events: none;
+}
+
+@keyframes floatPulse {
+    0% { transform: translateY(100vh) scale(1); }
+    25% { transform: translateY(75vh) scale(1.3); }
+    50% { transform: translateY(50vh) scale(1); }
+    75% { transform: translateY(25vh) scale(1.3); }
+    100% { transform: translateY(-10vh) scale(1); }
+}
+
+@keyframes twinkle {
+    0% { opacity: 1; transform: scale(0.5); }
+    100% { opacity: 0; transform: scale(1.5); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>💝 Happy Valentines Day Dryden 💝</h1>
+    <button id="startBtn" onclick="startLetter()">Click Me</button>
+    <p id="letter"></p>
+    <button id="closeBtn" onclick="closePage()">Close ❤️</button>
+</div>
+
+<script>
+const message = "To our first Valentine’s Day together, thank you for always being there for me baby 🩷 I'm so lucky to have you in my life, I love you so big much 🥰😚";
+
+function startLetter() {
+    document.getElementById("startBtn").style.display = "none";
+    const letter = document.getElementById("letter");
+    letter.style.display = "block";
+
+    let i = 0;
+    const typing = setInterval(() => {
+        letter.textContent += message[i];
+        i++;
+
+        if (i >= message.length) {
+            clearInterval(typing);
+            document.getElementById("closeBtn").style.display = "inline-block";
+        }
+    }, 40);
+}
+
+/* ⭐ Sparkle trail */
+function createSparkle(x, y) {
+    const sparkle = document.createElement("div");
+    sparkle.classList.add("sparkle");
+    sparkle.innerHTML = "☁️";
+    sparkle.style.left = x + "px";
+    sparkle.style.top = y + "px";
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 800);
+}
+
+function createHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "🩷";
+
+        const x = Math.random() * window.innerWidth;
+        heart.style.left = x + "px";
+        heart.style.fontSize = Math.random() * 20 + 15 + "px";
+
+        document.body.appendChild(heart);
+
+        const sparkleInterval = setInterval(() => {
+            createSparkle(x + Math.random()*30, window.innerHeight - Math.random()*200);
+        }, 150);
+
+        setTimeout(() => {
+            clearInterval(sparkleInterval);
+            heart.remove();
+        }, 4000);
+    }, 120);
+}
+
+function createKiss() {
+    setInterval(() => {
+        const kiss = document.createElement("div");
+        kiss.classList.add("kiss");
+        kiss.innerHTML = "💋";
+
+        const x = Math.random() * window.innerWidth;
+        kiss.style.left = x + "px";
+        kiss.style.fontSize = Math.random() * 20 + 15 + "px";
+
+        document.body.appendChild(kiss);
+
+        const sparkleInterval = setInterval(() => {
+            createSparkle(x + Math.random()*30, window.innerHeight - Math.random()*200);
+        }, 150);
+
+        setTimeout(() => {
+            clearInterval(sparkleInterval);
+            kiss.remove();
+        }, 4000);
+    }, 200);
+}
+
+function closePage() {
+    window.close();
+
+    setTimeout(() => {
+        document.body.innerHTML = "<h1>Love you 🩷</h1><p>You can close this tab now.</p>";
+    }, 200);
+}
+
+createHearts();
+createKiss();
+</script>
+
+</body>
+</html>
